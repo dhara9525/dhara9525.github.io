@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hone Capital - UX Case Study - Query Builder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://rawgit.com/mistic100/jQuery-QueryBuilder/master/dist/js/query-builder.standalone.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="https://querybuilder.js.org/node_modules/jQuery-QueryBuilder/dist/css/query-builder.default.min.css"
+          rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script src="https://fb.me/react-0.14.7.js"></script>
+    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <style>
+        .results {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .results td, .results th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .results tr:nth-child(even){background-color: #f2f2f2;}
+
+        .results tr:hover {background-color: #ddd;}
+
+        .results th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+    <script type="text/babel">
+        const defaultRules = {
+            condition: 'AND',
+            rules: [{
+                id: 'category',
+                operator: 'equal',
+                value: 1
+            }, {
+                id: 'name',
+                operator: 'equal',
+                value: 'consectetur'
+            }]
+        };
+        function initializeQueryBuilder(element, newRules) {
+            const filters = [
+                {
+                    id: 'category',
+                    label: 'Category',
+                    type: 'integer',
+                    input: 'select',
+                    values: {
+                        1: 'Company',
+                        2: 'Deals',
+                        3: 'Investors'
+                    },
+                    operators: ['equal', 'not_equal']
+                }, {
+                    id: 'name',
+                    label: 'Name',
+                    type: 'string'
+                }, {
+                    id: 'asset_value',
+                    label: 'Asset Value',
+                    type: 'string'
+                }, {
+                    id: 'date',
+                    label: 'Date',
+                    type: 'string'
+                }
+            ];
+            const rules = newRules ? newRules : defaultRules;
+            $(element).queryBuilder({filters, rules});
+        }
+
+        class QueryBuilderWrapper extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    results: null
+                };
+                this.data = {
+                    companies: null,
+                    deals: null,
+                    investors: null
+                };
+                this.updateData = this.updateData.bind(this)
+            }
+
+            componentWillMount() {
+                $.getJSON("companies.json", function (data) {
+                    this.updateData(data, "companies");
+                }.bind(this));
+            }
+
+            componentDidMount() {
+                const element = this.refs.queryBuilder;
+                initializeQueryBuilder(element);
+            }
+
+            componentWillUnmount() {
+                $(this.refs.queryBuilder).queryBuilder('destroy');
+            }
+
+            shouldComponentUpdate() {
+                return false;
+            }
+
+            handleSearchResultsClick() {
+                const rules = $(this.refs.queryBuilder).queryBuilder('getRules');
+                const sampleRule = rules.rules[1].value;
+                var searchResults = this.data.companies.filter(function (itm) {
+                    return sampleRule.indexOf(itm.company) > -1;
+                });
+                this.setState({results: searchResults});
+                console.log(searchResults);
+                this.forceUpdate();
+            }
+
+            updateData(data, type) {
+                this.data[type] = data;
+            }
+
+            renderSearchResults() {
+                return <table className="results">
+                    <thead>
+                    <tr>
+                        <th>Asset Value</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.results.map((row, i) =>
+                            <tr key={i}>
+                                {Object.keys(row).map((col, j) =>
+                                        <td key={j}>{row[col]}</td>
+                                )}
+                            </tr>
+                    )}
+                    </tbody>
+                </table>;
+            }
+
+            render() {
+                return (
+                        <div>
+                            <div id='query-builder' ref='queryBuilder'/>
+                            <div className='row'>
+                                <div className='col-md-4'>
+                                    <br/>
+                                    <button className='btn btn-success'
+                                            onClick={this.handleSearchResultsClick.bind(this)}>Search Results
+                                    </button>
+                                </div>
+                                <div className='col-md-4'>
+                                </div>
+                            </div>
+                            <br/>
+                            <pre>
+                            Results found:
+                                {this.state.results && this.renderSearchResults()}
+                        </pre>
+                        </div>
+                );
+            }
+        };
+        ReactDOM.render(React.createElement(QueryBuilderWrapper), document.getElementById('react-app'));
+    </script>
+</head>
+<body>
+<div id="react-app"></div>
+</body>
+</html>
