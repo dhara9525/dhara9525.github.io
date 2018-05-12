@@ -1,181 +1,234 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hone Capital - UX Case Study - Query Builder</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="https://rawgit.com/mistic100/jQuery-QueryBuilder/master/dist/js/query-builder.standalone.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link href="https://querybuilder.js.org/node_modules/jQuery-QueryBuilder/dist/css/query-builder.default.min.css"
-          rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-    <script src="https://fb.me/react-0.14.7.js"></script>
-    <script src="https://fb.me/react-dom-0.14.7.js"></script>
+    <title>Software engineer Ms. Dhara Tamhane's resume </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
     <style>
-        .results {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+
+        .banner h1 {
+            padding: 25px;
+            margin: 20px;
+            height: 80px;
+            color: White;
+            margin-top: 50px;
+            font-family: "Roboto", sans-serif;
+            text-align: center;
+            position: inherit;
         }
 
-        .results td, .results th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .results tr:nth-child(even){background-color: #f2f2f2;}
-
-        .results tr:hover {background-color: #ddd;}
-
-        .results th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
+        .banner p {
             color: white;
+            text-align: center;
+            font-size: medium;
+            font-family: "Roboto", sans-serif;
+            position: inherit;
         }
+
+        .banner_color {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(to right, #ff3399 27%, #cc0099 61%);
+        }
+
+        .navbar-inverse {
+            background-color: black;
+            box-shadow: 0 0 40px 10px rgba(140, 140, 140, 0.3);
+        }
+
+        .contact_2 {
+            position: inherit;
+            padding: 2px;
+            margin-top: 27px;
+
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            border: 4px;
+
+            height: 1800px;
+            width: 750px;
+            font-family: Helvetica;
+            font-size: 100%;
+
+            background-color: white;
+            border-radius: 10px;
+            top: 235px;
+            margin: 0 20%;
+            position: absolute;
+            padding: 1%;
+            box-shadow: 0 0 40px 10px rgba(140, 140, 140, 0.3);
+        }
+
+        .container1, .container2, .container3 {
+            height: 500px;
+            width: 500px;
+            font-family: "Roboto", sans-serif;
+            font-size: x-large;
+            color: black;
+            border: 5px;
+            padding: 15px;
+            align-items: center;
+            margin: 17px;
+        }
+
+        .container1 {
+            height: 300px;
+        }
+
+        .container3 {
+            height: 600px;
+        }
+
+        .container1_1:hover, .container1_2:hover, .container3_1:hover,
+        .container3_2:hover, .container3_3:hover, .container3_3:hover,
+        .container3_4:hover, .container3_5:hover {
+            box-shadow: 0 0 20px 10px rgba(140, 140, 140, 0.3);
+        }
+
+        .container1_1, .container1_2, .container3_1,
+        .container3_2, .container3_3, .container3_3,
+        .container3_4, .container3_5 {
+            border: groove;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 7px;
+            text-align: left;
+            font-size: medium;
+        }
+
+        .footer_note {
+            position: relative;
+        }
+
     </style>
-    <script type="text/babel">
-        const defaultRules = {
-            condition: 'AND',
-            rules: [{
-                id: 'category',
-                operator: 'equal',
-                value: 1
-            }, {
-                id: 'name',
-                operator: 'equal',
-                value: 'consectetur'
-            }]
-        };
-        function initializeQueryBuilder(element, newRules) {
-            const filters = [
-                {
-                    id: 'category',
-                    label: 'Category',
-                    type: 'integer',
-                    input: 'select',
-                    values: {
-                        1: 'Company',
-                        2: 'Deals',
-                        3: 'Investors'
-                    },
-                    operators: ['equal', 'not_equal']
-                }, {
-                    id: 'name',
-                    label: 'Name',
-                    type: 'string'
-                }, {
-                    id: 'asset_value',
-                    label: 'Asset Value',
-                    type: 'string'
-                }, {
-                    id: 'date',
-                    label: 'Date',
-                    type: 'string'
-                }
-            ];
-            const rules = newRules ? newRules : defaultRules;
-            $(element).queryBuilder({filters, rules});
-        }
-
-        class QueryBuilderWrapper extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    results: null
-                };
-                this.data = {
-                    companies: null,
-                    deals: null,
-                    investors: null
-                };
-                this.updateData = this.updateData.bind(this)
-            }
-
-            componentWillMount() {
-                $.getJSON("companies.json", function (data) {
-                    this.updateData(data, "companies");
-                }.bind(this));
-            }
-
-            componentDidMount() {
-                const element = this.refs.queryBuilder;
-                initializeQueryBuilder(element);
-            }
-
-            componentWillUnmount() {
-                $(this.refs.queryBuilder).queryBuilder('destroy');
-            }
-
-            shouldComponentUpdate() {
-                return false;
-            }
-
-            handleSearchResultsClick() {
-                const rules = $(this.refs.queryBuilder).queryBuilder('getRules');
-                const sampleRule = rules.rules[1].value;
-                var searchResults = this.data.companies.filter(function (itm) {
-                    return sampleRule.indexOf(itm.company) > -1;
-                });
-                this.setState({results: searchResults});
-                console.log(searchResults);
-                this.forceUpdate();
-            }
-
-            updateData(data, type) {
-                this.data[type] = data;
-            }
-
-            renderSearchResults() {
-                return <table className="results">
-                    <thead>
-                    <tr>
-                        <th>Asset Value</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.results.map((row, i) =>
-                            <tr key={i}>
-                                {Object.keys(row).map((col, j) =>
-                                        <td key={j}>{row[col]}</td>
-                                )}
-                            </tr>
-                    )}
-                    </tbody>
-                </table>;
-            }
-
-            render() {
-                return (
-                        <div>
-                            <div id='query-builder' ref='queryBuilder'/>
-                            <div className='row'>
-                                <div className='col-md-4'>
-                                    <br/>
-                                    <button className='btn btn-success'
-                                            onClick={this.handleSearchResultsClick.bind(this)}>Search Results
-                                    </button>
-                                </div>
-                                <div className='col-md-4'>
-                                </div>
-                            </div>
-                            <br/>
-                            <pre>
-                            Results found:
-                                {this.state.results && this.renderSearchResults()}
-                        </pre>
-                        </div>
-                );
-            }
-        };
-        ReactDOM.render(React.createElement(QueryBuilderWrapper), document.getElementById('react-app'));
-    </script>
 </head>
 <body>
-<div id="react-app"></div>
+<div>
+    <div class="top-container">
+        <div class="banner">
+            <div class="banner_color">
+                <h1>Dhara Tamhane<br></h1>
+                <p><span class="glyphicon glyphicon-user"></span> Software Engineer
+                    <span class="glyphicon glyphicon-envelope"></span> dhara9525@gmail.com
+                    <span class="glyphicon glyphicon-pushpin"></span> Santa Clara
+                </p>
+            </div>
+        </div>
+
+        <div class="contact_2">
+            <nav class="navbar navbar-inverse navbar-fixed-top my-nav">
+                <div class="container-fluid">
+
+                    <ul class="nav navbar-nav">
+                        <li role="presentation"><a href="https://www.linkedin.com/in/dhara-tamhane-7516a930/"
+                                                   target="_blank">LinkedIn</a>
+                        </li> <!-- role="presentation" class="active" -->
+                        <li role="presentation"><a href="https://github.com/dhara9525" target="_blank">GitHub</a></li>
+                        <li role="presentation"><a href="dhara9525@gmail.com" target=_blank>Email</a></li>
+                        <li role="presentation"><a href="https://twitter.com/dharatamhane" target="_blank">Twitter</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </nav>
+        </div>
+
+        <div class="flex-container">
+            <div class="container1"><p><b>Education </b></p>
+
+                <div class="container1_1"><p><b>M.S. in Software Engineering</b><br> <br>
+                    <a href="https://www.scu.edu/" target="_blank">Santa Clara University</a>
+                </p>
+
+                </div>
+                <div class="container1_2"><p><b>B.S. in Computer Science Ganpat University</b> <br> <br>
+                    <a href="http://www.dcs.gnu.ac.in/" target="_blank">Ganpat University</a>
+                </p>
+
+                </div>
+
+            </div>
+            <div class="container2">
+                <p><b> Work Experince</b></p>
+                <canvas id='myChart'>
+                </canvas>
+            </div>
+            <div class="container3"><p><b>Technology Stack </b></p>
+
+                <div class="container3_1"><p><b>Client Side : Front end</b><br> <br>
+                    HTML5, CSS3, JavaScript, Bootstrap, Chart.JS, Regular expresssion<br>
+                    <a href="https://github.com/dhara9525/Sports_Meetup" target="_blank">Project</a>
+                </p>
+
+                </div>
+                <div class="container3_2"><p><b> Server Side: Backend </b><br> <br>
+                    Java, .Net C#, C++<br>
+                    <a href="http://www.dcs.gnu.ac.in/" target="_blank">project</a>
+                </p>
+                </div>
+                <div class="container3_3"><p><b>Data base</b> <br> <br>
+                    Relational database: MySQL, SQL server<br>
+                    <a href="https://github.com/dhara9525/DatabaseProject_PersonRecord" target="_blank">Project
+                    </a>
+                </p>
+                </div>
+                <div class="container3_4"><p><b> Machine Learning </b><br> <br>
+                    Matlab, Supervised Learning, Unsupervised Learning <br>
+                    <a href="https://github.com/dhara9525/LinearRegression_HousingData" target="_blank">Project
+                    </a>
+                </p>
+                </div>
+                <div class="container3_5"><p><b> Other </b><br> <br>
+                    Git, XML, JIRA, Agile/Scrum, UML, Bitbucket, Visual studio team services, , Google App engine/
+                    Google cloud, Microsoft Azure
+                    <br>
+                </p>
+                </div>
+            </div>
+        </div>
+        <script>
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'polarArea', //type: 'polarArea'
+                data: {
+                    labels: ["Selly Automotive", "Eitacies", "SPEL", "BISAG"],
+                    datasets: [{
+                        label: 'Months',
+                        data: [4, 4, 3, 6],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
 </body>
 </html>
