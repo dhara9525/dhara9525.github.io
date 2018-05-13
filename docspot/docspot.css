@@ -1,0 +1,39 @@
+.flex-container{
+    background-color: darkgray;
+    border: solid;
+    border-color: black;
+    display: flex;
+
+    padding: 10px;
+    width: 470px;
+    align-items: center;
+    margin-top: 100px;
+    flex-wrap: wrap;
+    margin: 10% 30%;
+    border-radius: 10px;
+
+}
+
+.flex-container > div {
+    background-color: white;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+    border-radius: 7px;
+
+}
+.button1, .button2 {
+    height: 50px;
+    width: 200px;
+    border-radius: 15px;
+    background-color: royalblue;
+    color: white;
+    position: relative;
+    margin-left: 30%;
+}
+.button2{
+    margin-left: 50%;
+}
